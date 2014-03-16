@@ -1,0 +1,4 @@
+.DS_store
+data.txt
+errors.txt
+*.pyc
