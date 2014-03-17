@@ -31,17 +31,13 @@ def index():
 		pass
  	return render_template('index.html', tracks=processed_data)
 
-	
 @app.route("/update/")
 def update():
-	following = client.get('/me/followings')
-	following_ids = []
-	for person in following:
-	 	following_ids.append(person.id)
+	following_ids = get_followers()
 	tracks = ''
 	errors = open('errors.txt', 'w+')
 	for user in following_ids:
-		user_tracks = client.get('/tracks/', user_id=user, limit=30, embeddable_by='me')
+		user_tracks = client.get('/tracks/', user_id=user.id, limit=30, embeddable_by='me')
 		for x in user_tracks:
 			try:
 				user = x.user['username']
@@ -60,15 +56,26 @@ def update():
 	f.close()
 	errors.close()
 	return 'update'
-
+	
+def get_favorites():
+	following = get_followers()
+	favourites = {}
+	for person in following:
+		tracks = client.get('/users/' + str(person.id) + '/favorites')
+		if len(tracks) > 0:
+			track_details = []
+			for track in tracks:
+				if track.embeddable_by == 'all':
+					embed = client.get('/oembed', url=track.permalink_url)
+				else:
+					embed = 'not embeddable'
+				track_details.append({'user' : track.user['username'], 'user_id' : track.user['id'], 'embed' : embed, 'title' : track.title, 'date' : track.created_at, 'track_id' : track.id })
+			favourites[person.username] = track_details
+	return favourites
+	
+def get_followers():
+	return client.get('/me/followings')
 
 if __name__ == "__main__":
 	app.debug = True
 	app.run()
-
-# raw_data = open('data.txt')
-# processed_data = []
-# keys = ['title', 'user', 'permalink', 'embed', 'duration', 'date']
-# for line in raw_data:
-# 	print line.split(' | ')
-# 	processed_data.append(dict(zip(keys, line.split(' | '))))
