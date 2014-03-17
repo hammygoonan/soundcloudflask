@@ -1,6 +1,8 @@
 <!doctype html>
 <head>
 	<title>Soundcloud Hackathon</title>
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+	
 	<style>
 		body{
 			font-family: 'Helvetica Nue', helvetica, sans-serif;
@@ -9,8 +11,12 @@
 		table{
 			width: 100%;
 		}
+		th{
+			text-align: left;
+		}
 		td{
 			padding: 3px;
+			vertical-align: middle;
 		}
 		.overlay{
 			position: fixed;
@@ -21,6 +27,11 @@
 		}
 		.play{
 			cursor: pointer;
+			color: white;
+			background-color:#179121;
+			border-radius: 10px;
+			padding: 5px 15px;
+			float: right;
 		}
 	</style>
 </head>
@@ -29,20 +40,20 @@
 		<thead>
 			<tr>
 				<th><a href="?sort=title">Title</a></th>
+				<th></th>
 				<th><a href="?sort=user">User</a></th>
 				<th><a href="?sort=duration">Duration</a></th>
 				<th><a href="?sort=date">Date</a></th>
-				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for track in tracks %}
 				<tr>
-					<td>{{ track.title.decode('utf8') }}</td>
-					<td>{{ track.user.decode('utf8') }}</td>
-					<td>{{ track.duration.decode('utf8') }}</td>
-					<td>{{ track.date.decode('utf8') }}</td>
-					<td class="play" data-embed="{{ track.embed }}">play</td>
+					<td width="50%">{{ track.title.decode('utf8') }}</td>
+					<td width="5%"><a class="play" data-embed="{{ track.embed }}">play</a></td>
+					<td width="15%">{{ track.user.decode('utf8') }}</td>
+					<td width="15%">{{ track.duration.decode('utf8').split('.')[0] }}</td>
+					<td width="15%">{{ track.date.decode('utf8').split(' ')[0] }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>

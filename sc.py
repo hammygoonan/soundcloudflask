@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from flask import Flask, request, 	render_template
+from flask import Flask, request, render_template, url_for
 from connection import ScDetails
 import soundcloud
 import datetime
@@ -41,7 +41,7 @@ def update():
 	tracks = ''
 	errors = open('errors.txt', 'w+')
 	for user in following_ids:
-		user_tracks = client.get('/tracks/', user_id=user, limit=10, embeddable_by='me')
+		user_tracks = client.get('/tracks/', user_id=user, limit=30, embeddable_by='me')
 		for x in user_tracks:
 			try:
 				user = x.user['username']
