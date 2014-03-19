@@ -56,8 +56,14 @@ def update():
 	f.close()
 	errors.close()
 	return 'update'
-	
-def get_favorites():
+
+@app.route('/favorites/')
+def favourites():
+	data = open('favourites.txt').read()
+	users = data.split('~~~~~')
+
+
+def update_favorites():
 	following = get_followers()
 	favourites = {}
 	for person in following:
@@ -67,11 +73,21 @@ def get_favorites():
 			for track in tracks:
 				if track.embeddable_by == 'all':
 					embed = client.get('/oembed', url=track.permalink_url)
+					embed = embed.html
 				else:
 					embed = 'not embeddable'
 				track_details.append({'user' : track.user['username'], 'user_id' : track.user['id'], 'embed' : embed, 'title' : track.title, 'date' : track.created_at, 'track_id' : track.id })
 			favourites[person.username] = track_details
-	return favourites
+			print favourites
+			print "\n\n"
+	fav_file = open('favourites.txt', 'w')
+# 	for person in favourites:
+# 		fav_file.write(person)
+# 		for track in person:
+# 			print track
+# #			fav_file.write(track.user + ' | ' + track.user_id + ' | ' + track.embed + ' | ' + track.title + ' | ' + track.date + ' | ' + track.track_id)
+# 		fav_file.write('~~~~~\n')
+
 	
 def get_followers():
 	return client.get('/me/followings')
@@ -79,3 +95,5 @@ def get_followers():
 if __name__ == "__main__":
 	app.debug = True
 	app.run()
+
+# update_favorites()

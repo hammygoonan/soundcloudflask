@@ -87,6 +87,7 @@
 				if($.inArray(text, users) === -1) users.push(text)
 			});
 			
+			users.sort();
 			$(users).each(function(){
 				$('.user_filter').append($('<option></option>').attr("value", this).text(this));
 			});
