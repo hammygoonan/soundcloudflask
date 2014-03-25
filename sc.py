@@ -65,7 +65,7 @@ def favourites():
 
 def update_favorites():
 	following = get_followers()
-	favourites = {}
+	favourites = []
 	for person in following:
 		tracks = client.get('/users/' + str(person.id) + '/favorites')
 		if len(tracks) > 0:
@@ -73,20 +73,22 @@ def update_favorites():
 			for track in tracks:
 				if track.embeddable_by == 'all':
 					embed = client.get('/oembed', url=track.permalink_url)
-					embed = embed.html
+					embed = embed.html.encode('utf8')
 				else:
 					embed = 'not embeddable'
-				track_details.append({'user' : track.user['username'], 'user_id' : track.user['id'], 'embed' : embed, 'title' : track.title, 'date' : track.created_at, 'track_id' : track.id })
-			favourites[person.username] = track_details
-			print favourites
-			print "\n\n"
+				track_user = track.user['username'].encode('utf8')
+				track_user_id = track.user['id']
+				track_title = track.title.encode('utf8')
+				track_date = track.created_at
+				track_id = track.id
+				track_details.append({'user' : track_user, 'user_id' : str(track_user_id), 'embed' : embed, 'title' : track_title, 'date' : str(track_date), 'track_id' : str(track_id) })
+			favourites.append({'user' : person.username, 'tracks' : track_details})
 	fav_file = open('favourites.txt', 'w')
-# 	for person in favourites:
-# 		fav_file.write(person)
-# 		for track in person:
-# 			print track
-# #			fav_file.write(track.user + ' | ' + track.user_id + ' | ' + track.embed + ' | ' + track.title + ' | ' + track.date + ' | ' + track.track_id)
-# 		fav_file.write('~~~~~\n')
+	for person in favourites:
+		fav_file.write(person['user'] + "\n")
+		for track in person['tracks']:
+			fav_file.write(track['user'] + ' | ' + track['user_id'] + ' | ' + track['embed'] + ' | ' + track['title'] + ' | ' + track['date'] + ' | ' + track['track_id'] + "\n")
+		fav_file.write('~~~~~\n')
 
 	
 def get_followers():
@@ -95,5 +97,3 @@ def get_followers():
 if __name__ == "__main__":
 	app.debug = True
 	app.run()
-
-# update_favorites()
