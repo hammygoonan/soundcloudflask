@@ -7,8 +7,8 @@ This bad boy is a pretty simple way of getting what I want out of soundcloud. Ba
 Requirements
 ------------
 
-*[Flask](http://flask.pocoo.org/)
-*A [Soundcloud](https://developers.soundcloud.com/) account and API Key
+* [Flask](http://flask.pocoo.org/)
+* A [Soundcloud](https://developers.soundcloud.com/) account and API Key
 
 Setup
 -----
@@ -22,6 +22,6 @@ Might be wise to set it up as a cron
 Future Development
 ------------------
 
-*A list of my favourites
-*A list of my followes favourites
-*Be able to follow my followers favourites
+* A list of my favourites
+* A list of my followes favourites
+* Be able to follow my followers favourites

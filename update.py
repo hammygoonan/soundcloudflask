@@ -5,5 +5,6 @@ import sc
 
 print 'starting feed update'
 sc.update()
-print 'updated'
+print 'starting favourites updates'
+sc.update_favorites()
 print 'end'
