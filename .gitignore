@@ -1,5 +1,5 @@
 .DS_store
 data.txt
-favourites.txt
+favourites
 errors.txt
 *.pyc
