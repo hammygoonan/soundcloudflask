@@ -18,6 +18,10 @@
 			padding: 3px;
 			vertical-align: middle;
 		}
+		li{
+			padding: 10px;
+			width: 70%;
+		}
 		.overlay{
 			position: fixed;
 			width: 100%;
@@ -31,33 +35,21 @@
 			background-color:#179121;
 			border-radius: 10px;
 			padding: 5px 15px;
-			float: right;
+			float: right
 		}
 	</style>
 </head>
 <body>
-	<table>
-		<thead>
-			<tr>
-				<th><a href="?sort=title">Title</a></th>
-				<th></th>
-				<th><a href="?sort=user">User</a> <select class="user_filter"><option>-- filter by user --</option></select></th>
-				<th><a href="?sort=duration">Duration</a></th>
-				<th><a href="?sort=date">Date</a></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for track in tracks %}
-				<tr>
-					<td width="50%">{{ track.title.decode('utf8') }}</td>
-					<td width="5%"><a class="play" data-embed="{{ track.permalink }}">play</a></td>
-					<td width="15%" class="user">{{ track.user.decode('utf8') }}</td>
-					<td width="15%">{{ track.duration.decode('utf8').split('.')[0] }}</td>
-					<td width="15%">{{ track.date.decode('utf8').split(' ')[0] }}</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{% for user in tracks %}
+		<div class="favourite">
+			<h2>{{ user.user }}</h2>
+			<ul>
+				{% for track in user.tracks %}
+					<li><strong>{{ track.user.decode('utf8') }}</strong> - {{ track.title.decode('utf8') }} ({{ track.duration.split('.')[0] }})<a class="play" data-embed="{{ track.permalink }}">play</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endfor %}
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -79,18 +71,18 @@
 					$('body').append(popup);				
 				});
 
-				
+			
 			});
 			$(document).on('click', '.overlay', function(e){
 				$('.overlay, .popup').remove();
 			})
-			
+		
 			var users = new Array()
 			$('.user').each(function(){
 				var text = $(this).text();
 				if($.inArray(text, users) === -1) users.push(text)
 			});
-			
+		
 			users.sort();
 			$(users).each(function(){
 				$('.user_filter').append($('<option></option>').attr("value", this).text(this));
@@ -104,7 +96,7 @@
 					}
 				});
 			});
-			
+		
 		});
 	</script>
 </body>

@@ -5,6 +5,7 @@ from connection import ScDetails
 import soundcloud
 import datetime
 import json
+import os
 
 details = ScDetails()
 
@@ -20,7 +21,7 @@ client = soundcloud.Client(
 def index():
 	raw_data = open('data.txt')
 	processed_data = []
-	keys = ['title', 'user', 'permalink', 'embed', 'duration', 'date']
+	keys = ['title', 'user', 'permalink', 'duration', 'date']
 	for line in raw_data:
 		processed_data.append(dict(zip(keys, line.split(' | '))))
 	try: # if there's a sort provided
@@ -42,12 +43,10 @@ def update():
 			try:
 				user = x.user['username']
 				permalink =  x.permalink_url
-		 		embed = client.get('/oembed', url=permalink)
-				embed_html = embed.html
 				duration = datetime.timedelta(milliseconds=x.duration)
 				title = x.title
 				date = x.created_at
-	 			tracks += title + ' | ' + user + ' | ' + permalink + ' | ' + embed_html + ' | ' + str(duration) + ' | ' + date + "\n"
+	 			tracks += title + ' | ' + user + ' | ' + permalink + ' | ' + str(duration) + ' | ' + date + "\n"
 		 	except:
 		 		error = 'Error - user: ' + x.user['username'] + ' track: ' + x.title
 		 		errors.write(error.encode('utf8'))
@@ -59,9 +58,22 @@ def update():
 
 @app.route('/favorites/')
 def favourites():
-	data = open('favourites.txt').read()
-	users = data.split('~~~~~')
+	track_list = []
+	for file in os.listdir("favourites"):
+		fav_file = open('favourites/' + file)
+		keys = ['user', 'user_id', 'permalink', 'title', 'date', 'track_id', 'duration']
+		processed_data = []
+		for line in fav_file:
+			processed_data.append(dict(zip(keys, line.split(' | '))))
+		track_list.append({'user' : file[:-4], 'tracks' : processed_data})
+	return render_template('favourites.html', tracks=track_list)
 
+	
+@app.route('/embedcode/', methods=['GET'])
+def embedcode():
+	track = request.args.get('track')
+	embed = client.get('/oembed', url=track)
+	return embed.html.encode('utf8')
 
 def update_favorites():
 	following = get_followers()
@@ -72,23 +84,23 @@ def update_favorites():
 			track_details = []
 			for track in tracks:
 				if track.embeddable_by == 'all':
-					embed = client.get('/oembed', url=track.permalink_url)
-					embed = embed.html.encode('utf8')
+					embed = track.permalink_url
 				else:
 					embed = 'not embeddable'
-				track_user = track.user['username'].encode('utf8')
+				track_user = track.user['username']
 				track_user_id = track.user['id']
-				track_title = track.title.encode('utf8')
+				track_title = track.title
 				track_date = track.created_at
 				track_id = track.id
-				track_details.append({'user' : track_user, 'user_id' : str(track_user_id), 'embed' : embed, 'title' : track_title, 'date' : str(track_date), 'track_id' : str(track_id) })
+				track_duration = datetime.timedelta(milliseconds=track.duration)
+				track_details.append({'user' : track_user, 'user_id' : str(track_user_id), 'embed' : embed, 'title' : track_title, 'date' : str(track_date), 'track_id' : str(track_id), 'duration' : str(track_duration) })
 			favourites.append({'user' : person.username, 'tracks' : track_details})
-	fav_file = open('favourites.txt', 'w')
 	for person in favourites:
-		fav_file.write(person['user'] + "\n")
+		fav_file = open('favourites/' + person['user'] + '.txt', 'w+')
 		for track in person['tracks']:
-			fav_file.write(track['user'] + ' | ' + track['user_id'] + ' | ' + track['embed'] + ' | ' + track['title'] + ' | ' + track['date'] + ' | ' + track['track_id'] + "\n")
-		fav_file.write('~~~~~\n')
+			to_write = track['user'] + ' | ' + track['user_id'] + ' | ' + track['embed'] + ' | ' + track['title'] + ' | ' + track['date'] + ' | ' + track['track_id'] + ' | ' + track['duration']  + "\n"
+			fav_file.write(to_write.encode('utf-8'))
+		fav_file.close()
 
 	
 def get_followers():
