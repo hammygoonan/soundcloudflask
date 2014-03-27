@@ -1,6 +1,5 @@
 .DS_store
 connection.py
 data.txt
-favourites
 errors.txt
 *.pyc
