@@ -19,7 +19,7 @@ client = soundcloud.Client(
 
 @app.route("/", methods=['GET'])
 def index():
-	raw_data = open('data.txt', 'w+')
+	raw_data = open('data.txt')
 	processed_data = []
 	keys = ['title', 'user', 'permalink', 'duration', 'date']
 	for line in raw_data:
@@ -60,7 +60,7 @@ def update():
 def favourites():
 	track_list = []
 	for file in os.listdir("favourites"):
-		fav_file = open('favourites/' + file, 'w+')
+		fav_file = open('favourites/' + file)
 		keys = ['user', 'user_id', 'permalink', 'title', 'date', 'track_id', 'duration']
 		processed_data = []
 		for line in fav_file:
