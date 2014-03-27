@@ -1,14 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 	<table>
-		{% for track in tracks %}
+		<thead>
 			<tr>
-				<td width="50%">{{ track.title.decode('utf8') }}</td>
-				<td width="5%"><a class="play" data-embed="{{ track.permalink }}">play</a></td>
-				<td width="15%" class="user">{{ track.user.decode('utf8') }}</td>
-				<td width="15%">{{ track.duration.decode('utf8').split('.')[0] }}</td>
-				<td width="15%">{{ track.date.decode('utf8').split(' ')[0] }}</td>
-			</tr>
-		{% endfor %}
+				<th><a href="?sort=title">Title</a></th>
+				<th></th>
+				<th><a href="?sort=user">User</a> <select class="user_filter"><option>-- filter by user --</option></select></th>
+				<th><a href="?sort=duration">Duration</a></th>
+				<th><a href="?sort=date">Date</a></th>
+  			</tr>
+		</thead>
+		<tbody>	
+			{% for track in tracks %}
+				<tr>
+					<td width="50%">{{ track.title.decode('utf8') }}</td>
+					<td width="5%"><a class="play" data-embed="{{ track.permalink }}">play</a></td>
+					<td width="15%" class="user">{{ track.user.decode('utf8') }}</td>
+					<td width="15%">{{ track.duration.decode('utf8').split('.')[0] }}</td>
+					<td width="15%">{{ track.date.decode('utf8').split(' ')[0] }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 {% endblock %}
