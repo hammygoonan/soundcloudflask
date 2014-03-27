@@ -8,6 +8,7 @@ Requirements
 ------------
 
 * [Flask](http://flask.pocoo.org/)
+* [A Python wrapper](https://github.com/soundcloud/soundcloud-python) for the Soundcloud API
 * A [Soundcloud](https://developers.soundcloud.com/) account and API Key
 
 Setup
@@ -15,7 +16,7 @@ Setup
 
 Basically you just need to run it: python sc.py
 
-You also need to update the text files from time to tiem: python update.py
+You also need to update the text files from time to time: python update.py
 
 Might be wise to set it up as a cron
 
