@@ -17,22 +17,6 @@ client = soundcloud.Client(
     password=details.password,
 )
 
-@app.route("/", methods=['GET'])
-def index():
-	raw_data = open('data.txt')
-	processed_data = []
-	keys = ['title', 'user', 'permalink', 'duration', 'date']
-	for line in raw_data:
-		processed_data.append(dict(zip(keys, line.split(' | '))))
-	try: # if there's a sort provided
-		sort = request.args.get('sort')
-		newlist = sorted(processed_data, key=lambda k: k[sort])
-		return render_template('index.html', tracks=newlist)
-	except KeyError:
-		pass
- 	return render_template('index.html', tracks=processed_data)
-
-@app.route("/update/")
 def update():
 	following_ids = get_followers()
 	tracks = ''
@@ -50,30 +34,11 @@ def update():
 		 	except:
 		 		error = 'Error - user: ' + x.user['username'] + ' track: ' + x.title
 		 		errors.write(error.encode('utf8'))
-	f = open('data.txt', 'w+')
+	f = open('data.txt', 'w')
 	f.write(tracks.encode('utf8'))
 	f.close()
 	errors.close()
 	return 'update'
-
-@app.route('/favorites/')
-def favourites():
-	track_list = []
-	for file in os.listdir("favourites"):
-		fav_file = open('favourites/' + file)
-		keys = ['user', 'user_id', 'permalink', 'title', 'date', 'track_id', 'duration']
-		processed_data = []
-		for line in fav_file:
-			processed_data.append(dict(zip(keys, line.split(' | '))))
-		track_list.append({'user' : file[:-4], 'tracks' : processed_data})
-	return render_template('favourites.html', tracks=track_list)
-
-	
-@app.route('/embedcode/', methods=['GET'])
-def embedcode():
-	track = request.args.get('track')
-	embed = client.get('/oembed', url=track)
-	return embed.html.encode('utf8')
 
 def update_favorites():
 	following = get_followers()
@@ -101,10 +66,43 @@ def update_favorites():
 			to_write = track['user'] + ' | ' + track['user_id'] + ' | ' + track['embed'] + ' | ' + track['title'] + ' | ' + track['date'] + ' | ' + track['track_id'] + ' | ' + track['duration']  + "\n"
 			fav_file.write(to_write.encode('utf-8'))
 		fav_file.close()
-
 	
 def get_followers():
 	return client.get('/me/followings')
+	
+@app.route("/", methods=['GET'])
+def index():
+	raw_data = open('data.txt')
+	processed_data = []
+	keys = ['title', 'user', 'permalink', 'duration', 'date']
+	for line in raw_data:
+		processed_data.append(dict(zip(keys, line.split(' | '))))
+	try: # if there's a sort provided
+		sort = request.args.get('sort')
+		newlist = sorted(processed_data, key=lambda k: k[sort])
+		return render_template('index.html', tracks=newlist)
+	except KeyError:
+		pass
+ 	return render_template('index.html', tracks=processed_data)
+	
+@app.route('/favorites/')
+def favourites():
+	track_list = []
+	for file in os.listdir("favourites"):
+		if file.endswith('.txt'):
+			fav_file = open('favourites/' + file)
+			keys = ['user', 'user_id', 'permalink', 'title', 'date', 'track_id', 'duration']
+			processed_data = []
+			for line in fav_file:
+				processed_data.append(dict(zip(keys, line.split(' | '))))
+			track_list.append({'user' : file[:-4], 'tracks' : processed_data})
+	return render_template('favourites.html', tracks=track_list)
+
+@app.route('/embedcode/', methods=['GET'])
+def embedcode():
+	track = request.args.get('track')
+	embed = client.get('/oembed', url=track)
+	return embed.html.encode('utf8')
 
 if __name__ == "__main__":
 	app.debug = True
