@@ -23,16 +23,17 @@ def update():
 	errors = open('errors.txt', 'w+')
 	for user in following_ids:
 		user_tracks = client.get('/tracks/', user_id=user.id, limit=30, embeddable_by='me')
-		for x in user_tracks:
+		for track in user_tracks:
 			try:
-				user = x.user['username']
-				permalink =  x.permalink_url
-				duration = datetime.timedelta(milliseconds=x.duration)
-				title = x.title
-				date = x.created_at
-	 			tracks += title + ' | ' + user + ' | ' + permalink + ' | ' + str(duration) + ' | ' + date + "\n"
+				user = track.user['username']
+				permalink =  track.permalink_url
+				duration = datetime.timedelta(milliseconds=track.duration)
+				title = track.title
+				date = track.created_at
+				track_id = str(track.id)
+	 			tracks += title + ' | ' + user + ' | ' + permalink + ' | ' + str(duration) + ' | ' + date + ' | ' + track_id + "\n"
 		 	except:
-		 		error = 'Error - user: ' + x.user['username'] + ' track: ' + x.title
+		 		error = 'Error - user: ' + track.user['username'] + ' track: ' + track.title
 		 		errors.write(error.encode('utf8'))
 	f = open('data.txt', 'w')
 	f.write(tracks.encode('utf8'))
@@ -74,7 +75,7 @@ def get_followers():
 def index():
 	raw_data = open('data.txt')
 	processed_data = []
-	keys = ['title', 'user', 'permalink', 'duration', 'date']
+	keys = ['title', 'user', 'permalink', 'duration', 'date', 'track_id']
 	for line in raw_data:
 		processed_data.append(dict(zip(keys, line.split(' | '))))
 	try: # if there's a sort provided
@@ -103,6 +104,14 @@ def embedcode():
 	track = request.args.get('track')
 	embed = client.get('/oembed', url=track)
 	return embed.html.encode('utf8')
+
+@app.route('/vlc/', methods=['GET'])
+def vlc():
+	track = request.args.get('track')
+	stream = client.get('/tracks/' + track)
+	stream_url = client.get(stream.stream_url, allow_redirects=False)
+	os.system("vlc -vvv " + stream_url.location)
+	return "vlc -vvv " + stream_url.location
 
 if __name__ == "__main__":
 	app.debug = True
