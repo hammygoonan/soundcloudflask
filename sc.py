@@ -4,8 +4,8 @@ from flask import Flask, request, render_template, url_for
 from connection import ScDetails
 import soundcloud
 import datetime
-import json
 import os
+import vlc
 
 details = ScDetails()
 
@@ -16,6 +16,20 @@ client = soundcloud.Client(
     username=details.username,
     password=details.password,
 )
+
+class vlcPlayer:
+	def __init__(self):
+		self.instance = vlc.Instance()
+		self.player = self.instance.media_player_new()
+	def play(self, stream_url):
+		self.media = self.instance.media_new(stream_url)
+		self.player.set_media(self.media)
+		self.player.play()
+		return self.player
+	def stop(self):
+		self.player.stop()
+
+vlc_player = vlcPlayer()
 
 def update():
 	following_ids = get_followers()
@@ -110,8 +124,13 @@ def vlc():
 	track = request.args.get('track')
 	stream = client.get('/tracks/' + track)
 	stream_url = client.get(stream.stream_url, allow_redirects=False)
-	os.system("vlc -vvv " + stream_url.location)
-	return "vlc -vvv " + stream_url.location
+	vlc_player.play(stream_url.location)
+	return "playing"
+
+@app.route('/stop_vlc/')
+def stop_vlc():
+	vlc_player.stop()
+	return "stopped"
 
 if __name__ == "__main__":
 	app.debug = True
