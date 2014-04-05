@@ -1,3 +1,7 @@
+'''
+	Player control class
+	# @todo merge vlc_player into this
+'''
 from connection import ScDetails
 from track import track
 from vlc_player import vlcPlayer

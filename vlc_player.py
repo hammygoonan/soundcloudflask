@@ -1,3 +1,7 @@
+'''
+	Interface for VLC binding
+	# @todo Merge into Player object
+'''
 import vlc
 class vlcPlayer:
 	def __init__(self):
