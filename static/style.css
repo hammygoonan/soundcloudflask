@@ -32,6 +32,33 @@ li{
 	float: right
 }
 
+.player {
+	font-size: 75%;
+	border: 1px solid #e7e7e7;
+	padding: 1em;
+	margin: 1em;
+	border-radius: 7px;
+}
+
+.control-play{	
+	margin: 0 5px;
+	display: inline-block;	
+
+	width: 0; 
+	height: 0; 
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;	
+	border-left: 15px solid black;
+}
+
+.control-stop {
+	margin: 0 5px;
+	display: inline-block;	
+
+	height: 20px;
+	width: 20px;
+	background: black;
+}
 .vlc{
 	cursor: pointer;
 	color: white;
