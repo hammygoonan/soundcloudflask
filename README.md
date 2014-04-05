@@ -10,6 +10,7 @@ Requirements
 * [Flask](http://flask.pocoo.org/)
 * [A Python wrapper](https://github.com/soundcloud/soundcloud-python) for the Soundcloud API
 * A [Soundcloud](https://developers.soundcloud.com/) account and API Key
+* [VLC](http://www.videolan.org/vlc/index.html)
 
 Setup
 -----
@@ -24,5 +25,9 @@ Future Development
 ------------------
 
 * A list of my favourites
-* A list of my followes favourites
+* A list of my follow's favourites
 * Be able to follow my followers favourites
+
+* Playlists
+* Smart playlists
+* Improved "incoming" stream, with recommendations
