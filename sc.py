@@ -8,7 +8,7 @@ from player import player
 app = Flask(__name__)
 
 # Instantiate player object
-the_player = player()
+player = player()
 
 def update():
 	following_ids = get_followers()
@@ -104,12 +104,12 @@ def embedcode():
 def vlc():
 	os.system('clear')
 	track_id = request.args.get('track')
-	the_player.play(track_id)
+	player.play(track_id)
 	return "playing"
 
 @app.route('/stop_vlc/')
 def stop_vlc():
-	the_player.stop()
+	player.stop()
 	return "stopped"
 
 if __name__ == "__main__":
