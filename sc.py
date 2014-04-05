@@ -1,35 +1,14 @@
 #!/usr/bin/python
 
 from flask import Flask, request, render_template, url_for
-from connection import ScDetails
-import soundcloud
 import datetime
 import os
-import vlc
-
-details = ScDetails()
+from player import player
 
 app = Flask(__name__)
-client = soundcloud.Client(
-    client_id=details.client_id,
-    client_secret=details.client_secret,
-    username=details.username,
-    password=details.password,
-)
 
-class vlcPlayer:
-	def __init__(self):
-		self.instance = vlc.Instance()
-		self.player = self.instance.media_player_new()
-	def play(self, stream_url):
-		self.media = self.instance.media_new(stream_url)
-		self.player.set_media(self.media)
-		self.player.play()
-		return self.player
-	def stop(self):
-		self.player.stop()
-
-vlc_player = vlcPlayer()
+# Instantiate player object
+the_player = player()
 
 def update():
 	following_ids = get_followers()
@@ -92,13 +71,15 @@ def index():
 	keys = ['title', 'user', 'permalink', 'duration', 'date', 'track_id']
 	for line in raw_data:
 		processed_data.append(dict(zip(keys, line.split(' | '))))
+	tracks = processed_data
 	try: # if there's a sort provided
 		sort = request.args.get('sort')
 		newlist = sorted(processed_data, key=lambda k: k[sort])
-		return render_template('index.html', tracks=newlist)
+		tracks = newlist
 	except KeyError:
 		pass
- 	return render_template('index.html', tracks=processed_data)
+
+ 	return render_template('index.html', tracks=tracks, now_playing="Mad track name")
 	
 @app.route('/favorites/')
 def favourites():
@@ -121,15 +102,14 @@ def embedcode():
 
 @app.route('/vlc/', methods=['GET'])
 def vlc():
-	track = request.args.get('track')
-	stream = client.get('/tracks/' + track)
-	stream_url = client.get(stream.stream_url, allow_redirects=False)
-	vlc_player.play(stream_url.location)
+	os.system('clear')
+	track_id = request.args.get('track')
+	the_player.play(track_id)
 	return "playing"
 
 @app.route('/stop_vlc/')
 def stop_vlc():
-	vlc_player.stop()
+	the_player.stop()
 	return "stopped"
 
 if __name__ == "__main__":
