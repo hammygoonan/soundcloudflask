@@ -1,10 +1,10 @@
 #!/usr/bin/python
 '''Run updates for Soundcloud Flask Application'''
 
-import sc
+import storage
 
 print 'starting feed update'
-sc.update()
+storage.update()
 print 'starting favourites updates'
-sc.update_favorites()
+storage.update_favorites()
 print 'end'

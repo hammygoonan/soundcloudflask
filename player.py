@@ -2,10 +2,10 @@
 	Player control class
 	# @todo merge vlc_player into this
 '''
-from connection import ScDetails
+
 from track import track
 from vlc_player import vlcPlayer
-import soundcloud
+from connection_manager import connectionManager
 class player(object):
 	def __init__(self):
 		# @todo Use track object to manage current track, such as title
@@ -13,13 +13,8 @@ class player(object):
 # 		self.track.test()
 		self.track = '';
 		self.vlc_player = vlcPlayer()
-		details = ScDetails()
-		self.client = soundcloud.Client(
-		    client_id=details.client_id,
-		    client_secret=details.client_secret,
-		    username=details.username,
-		    password=details.password,
-		)
+		connection_manager = connectionManager()
+		self.client = connection_manager.client
 			
 	def play(self, track_id):
 		# Play new track
