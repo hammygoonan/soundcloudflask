@@ -125,7 +125,7 @@ def vlc():
 	stream = client.get('/tracks/' + track)
 	stream_url = client.get(stream.stream_url, allow_redirects=False)
 	vlc_player.play(stream_url.location)
-	return "playing"
+	return stream_url.location
 
 @app.route('/stop_vlc/')
 def stop_vlc():
