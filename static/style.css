@@ -1,0 +1,80 @@
+body{
+	font-family: 'Helvetica Nue', helvetica, sans-serif;
+	font-size: 16px;
+}
+table{
+	width: 100%;
+}
+th{
+	text-align: left;
+}
+td{
+	padding: 3px;
+	vertical-align: middle;
+}
+li{
+	padding: 10px;
+	width: 70%;
+}
+.overlay{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+}
+.play{
+	cursor: pointer;
+	color: white;
+	background-color:#179121;
+	border-radius: 10px;
+	padding: 5px 15px;
+	float: right
+}
+
+.player {
+	font-size: 75%;
+	border: 1px solid #e7e7e7;
+	padding: 1em;
+	margin: 1em;
+	border-radius: 7px;
+}
+
+.control-play{	
+	margin: 0 5px;
+	display: inline-block;	
+
+	width: 0; 
+	height: 0; 
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;	
+	border-left: 15px solid black;
+}
+
+.control-stop {
+	margin: 0 5px;
+	display: inline-block;	
+
+	height: 20px;
+	width: 20px;
+	background: black;
+}
+.vlc{
+	cursor: pointer;
+	color: white;
+	background-color: #CC3232;
+	border-radius: 10px;
+	padding: 5px 15px;
+	float: right
+}
+.favourite{
+	text-align: center;
+}
+.favourite h2{
+	cursor: pointer;
+}
+.favourite ul{
+	display: none;
+	list-style-type: none;
+	padding: 0;
+}
