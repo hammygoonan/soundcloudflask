@@ -51,7 +51,7 @@ def vlc():
 	os.system('clear')
 	track_id = request.args.get('track')
 	player.play(track_id)
-	return "playing"
+	return stream_url.location
 
 @app.route('/stop_vlc/')
 def stop_vlc():
