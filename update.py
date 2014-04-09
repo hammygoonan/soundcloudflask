@@ -3,10 +3,10 @@
 
 import storage
 
-storate_cl = storage.storage()
+storage_client = storage.storage()
 
 print 'starting feed update'
-storate_cl.update()
+storage_client.update()
 print 'starting favourites updates'
-storate_cl.update_favorites()
+storage_client.update_favorites()
 print 'end'
