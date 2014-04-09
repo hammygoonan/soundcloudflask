@@ -1,10 +1,12 @@
+import connection_manager
+import datetime
 class storage(object):
 	def __init__(self):
-		connection_manager = connectionManager()
-		self.client = connection_manager.client
+		connection = connection_manager.connectionManager()
+		self.client = connection.client
 
 	def update(self):
-		following_ids = get_followers()
+		following_ids = self.get_followers()
 		tracks = ''
 		errors = open('errors.txt', 'w+')
 		for user in following_ids:
@@ -27,8 +29,8 @@ class storage(object):
 		errors.close()
 		return 'update'
 	
-	def update_favorites():
-		following = get_followers()
+	def update_favorites(self):
+		following = self.get_followers()
 		favourites = []
 		for person in following:
 			tracks = self.client.get('/users/' + str(person.id) + '/favorites')
@@ -54,5 +56,5 @@ class storage(object):
 				fav_file.write(to_write.encode('utf-8'))
 			fav_file.close()
 			
-	def get_followers():
+	def get_followers(self):
 		return self.client.get('/me/followings')
