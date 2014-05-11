@@ -60,6 +60,12 @@ def vlc():
 def stop_vlc():
 	player.stop()
 	return "stopped"
+	
+@app.route('/pause_vlc/')
+def pause_vlc():
+	player.pause()
+	return "paused"
+
 
 if __name__ == "__main__":
 	app.debug = True

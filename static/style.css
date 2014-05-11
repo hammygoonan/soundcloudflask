@@ -40,24 +40,33 @@ li{
 	border-radius: 7px;
 }
 
-.control-play{	
+.control-play{
 	margin: 0 5px;
-	display: inline-block;	
+	display: inline-block;
 
-	width: 0; 
-	height: 0; 
+	width: 0;
+	height: 0;
 	border-top: 10px solid transparent;
-	border-bottom: 10px solid transparent;	
+	border-bottom: 10px solid transparent;
 	border-left: 15px solid black;
 }
 
 .control-stop {
 	margin: 0 5px;
-	display: inline-block;	
+	display: inline-block;
 
 	height: 20px;
 	width: 20px;
 	background: black;
+}
+.control-pause {
+	margin: 0 5px;
+	display: inline-block;
+
+	height: 20px;
+	width: 5px;
+	border-left: 8px solid black;
+	border-right: 8px solid black;
 }
 .vlc{
 	cursor: pointer;

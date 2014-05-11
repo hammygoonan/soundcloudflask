@@ -15,3 +15,6 @@ class vlcPlayer:
 
 	def stop(self):
 		self.player.stop()
+
+	def pause(self):
+		self.player.pause()

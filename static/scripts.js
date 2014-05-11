@@ -38,7 +38,9 @@ $(document).ready(function(){
 	$('.control-stop').click(function(){
 		$.get('/stop_vlc/');
 	});
-
+	$('.control-pause').click(function(){
+		$.get('/pause_vlc/');
+	});
 
 	var users = new Array()
 	$('.user').each(function(){

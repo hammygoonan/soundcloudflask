@@ -35,3 +35,6 @@ class player(object):
 
 	def stop(self):
 		self.vlc_player.stop()
+
+	def pause(self):
+		self.vlc_player.pause()
