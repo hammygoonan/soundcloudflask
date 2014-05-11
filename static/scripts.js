@@ -14,29 +14,29 @@ $(document).ready(function(){
 			}).addClass('popup').html(data);
 			var overlay = $('<div />').addClass('overlay')
 			$('body').append(overlay);
-			$('body').append(popup);				
+			$('body').append(popup);
 		});
 	});
 	$(document).on('click', '.overlay', function(e){
 		$('.overlay, .popup').remove();
 	})
-	
+
 	$('.vlc').click(function(){
 		embed_url = $(this).attr('data-embed')
-		$.get('/vlc?track=' + embed_url);
+		$.get('/vlc/?track=' + embed_url);
 	});
-	
+
 	$('.control-play').click(function(){
 		if(embed_url = $(this).attr('data-embed')) {
-				
+
 		} else {
 			embed_url = '';
 		}
-		$.get('/vlc?track=' + embed_url);
+		$.get('/vlc/?track=' + embed_url);
 	});
 
 	$('.control-stop').click(function(){
-		$.get('/stop_vlc');
+		$.get('/stop_vlc/');
 	});
 
 

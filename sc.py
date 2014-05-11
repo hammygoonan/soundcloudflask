@@ -54,8 +54,7 @@ def embedcode():
 def vlc():
 	os.system('clear')
 	track_id = request.args.get('track')
-	player.play(track_id)
-	return stream_url.location
+	return player.play(track_id)
 
 @app.route('/stop_vlc/')
 def stop_vlc():

@@ -15,7 +15,7 @@ class player(object):
 		self.vlc_player = vlcPlayer()
 		connection_manager = connectionManager()
 		self.client = connection_manager.client
-			
+
 	def play(self, track_id):
 		# Play new track
 		if track_id:
@@ -31,6 +31,7 @@ class player(object):
 
 		stream_url = self.client.get(track.stream_url, allow_redirects=False)
 		self.vlc_player.play(stream_url.location)
-		
+		return stream_url.location
+
 	def stop(self):
 		self.vlc_player.stop()
