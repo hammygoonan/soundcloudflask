@@ -4,11 +4,15 @@ from flask import Flask, request, render_template, url_for
 import datetime
 import os
 from player import player
+from connection_manager import connectionManager
 
 app = Flask(__name__)
 
 # Instantiate player object
 player = player()
+
+connection_manager = connectionManager()
+client = connection_manager.client
 
 @app.route("/", methods=['GET'])
 def index():
@@ -26,7 +30,7 @@ def index():
 		pass
 
  	return render_template('index.html', tracks=tracks, now_playing="Mad track name")
-	
+
 @app.route('/favorites/')
 def favourites():
 	track_list = []
@@ -59,5 +63,5 @@ def stop_vlc():
 	return "stopped"
 
 if __name__ == "__main__":
-#	app.debug = True
+	app.debug = True
 	app.run(host='0.0.0.0')
