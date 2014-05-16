@@ -9,8 +9,9 @@ th{
 	text-align: left;
 }
 td{
-	padding: 3px;
+	padding: 7px 3px;
 	vertical-align: middle;
+	border-bottom: 1px solid #eee;
 }
 li{
 	padding: 10px;
@@ -29,7 +30,6 @@ li{
 	background-color:#179121;
 	border-radius: 10px;
 	padding: 5px 15px;
-	float: right
 }
 
 .player {
@@ -74,7 +74,6 @@ li{
 	background-color: #CC3232;
 	border-radius: 10px;
 	padding: 5px 15px;
-	float: right
 }
 .favourite{
 	text-align: center;

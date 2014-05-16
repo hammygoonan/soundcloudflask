@@ -11,14 +11,14 @@
 				<th><a href="?sort=date">Date</a></th>
   			</tr>
 		</thead>
-		<tbody>	
+		<tbody>
 			{% for track in tracks %}
 				<tr>
 					<td width="50%">{{ track.title.decode('utf8') }}</td>
-					<td width="5%"><a class="play" data-embed="{{ track.permalink }}">play</a> | <a class="vlc" data-embed="{{ track.track_id }}">vlc</a></td>
+					<td width="11%"><a class="play" data-embed="{{ track.permalink }}">play</a> | <a class="vlc" data-embed="{{ track.track_id }}">vlc</a></td>
 					<td width="15%" class="user">{{ track.user.decode('utf8') }}</td>
-					<td width="15%">{{ track.duration.decode('utf8').split('.')[0] }}</td>
-					<td width="15%">{{ track.date.decode('utf8').split(' ')[0] }}</td>
+					<td width="12%">{{ track.duration.decode('utf8').split('.')[0] }}</td>
+					<td width="12%">{{ track.date.decode('utf8').split(' ')[0] }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
